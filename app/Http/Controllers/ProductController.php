@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Http;
 
 class ProductController extends Controller
 {
-    
+    private $base_url = 'https://dummyjson.com';
+
    public function getProducts(Request $request) {
 
     try {
-        $base_url = 'https://dummyjson.com';
         $size = isset($request->size) ? $request->size : 10;
         $page = isset($request->page) ? $request->page - 1 : 0;
         $skip =  $page * $size;
@@ -20,9 +20,9 @@ class ProductController extends Controller
         $indexes = 'title,price,thumbnail';
         if (isset($request->search)) {
             $search = "q=$request->search";
-            $response = Http::get("$base_url/products/search?$search&select=$indexes&limit=$size&skip=$skip");
+            $response = Http::get("$this->base_url/products/search?$search&select=$indexes&limit=$size&skip=$skip");
         } else {
-            $response = Http::get("$base_url/products?limit=$size&skip=$skip&select=$indexes");
+            $response = Http::get("$this->base_url/products?limit=$size&skip=$skip&select=$indexes");
         }
 
         if ($response) {
@@ -42,7 +42,7 @@ class ProductController extends Controller
    public function getProduct(Request $request) {
     try {
         $id = $request->id;
-        $response = Http::get("https://dummyjson.com/products/$id");
+        $response = Http::get("$this->base_url/products/$id");
 
         $product =  $response->json();
 
