@@ -13,7 +13,7 @@ class ProductController extends Controller
     try {
         $base_url = 'https://dummyjson.com';
         $size = isset($request->size) ? $request->size : 10;
-        $page = isset($request->page) ? $request->page : 1;
+        $page = isset($request->page) ? $request->page - 1 : 0;
         $skip =  $page * $size;
 
         $response = null;
